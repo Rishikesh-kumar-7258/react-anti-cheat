@@ -148,8 +148,8 @@ a:hover {
 .main {
   flex: 1;
   margin-left: var(--sidebar-width);
-  max-width: 900px;
-  padding: 48px 48px 96px;
+  min-width: 0;
+  padding: 48px clamp(32px, 5vw, 96px) 96px;
 }
 
 .main h1 {
@@ -186,6 +186,7 @@ a:hover {
 .main p {
   margin-bottom: 16px;
   color: var(--text-secondary);
+  max-width: 80ch;
 }
 
 .main ul, .main ol {
@@ -353,7 +354,7 @@ td code {
 .hero .tagline {
   font-size: 20px;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto 32px;
 }
 
@@ -403,7 +404,7 @@ td code {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 20px;
-  max-width: 500px;
+  max-width: 560px;
   margin: 0 auto 48px;
   text-align: left;
 }
