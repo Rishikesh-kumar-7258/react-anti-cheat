@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Usage - react-anti-cheat</title>
+  <title>Advanced Usage - react-proctor</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <h2>react-anti-cheat</h2>
+        <h2>react-proctor</h2>
         <div class="version">v1.0.0</div>
       </div>
       <nav>
@@ -40,7 +40,7 @@
       <p>Register your own restrictions that integrate seamlessly with the built-in system.</p>
 
       <h3>registerRestriction</h3>
-<pre><code>import { registerRestriction } from '@rishikesh7258/react-anti-cheat';
+<pre><code>import { registerRestriction } from '@rishikesh7258/react-proctor';
 
 registerRestriction({
   name: 'detectScreenRecording',
@@ -191,7 +191,7 @@ registerRestriction({
 
       <h2 id="custom-violation-ui">Custom Violation UI</h2>
       <p>Use the <code>useViolationLog</code> hook to build custom monitoring dashboards:</p>
-<pre><code>import { useViolationLog } from '@rishikesh7258/react-anti-cheat';
+<pre><code>import { useViolationLog } from '@rishikesh7258/react-proctor';
 
 function ViolationMonitor() {
   const { violations, countByType, countBySeverity, lastViolation } = useViolationLog({
@@ -249,7 +249,7 @@ function ViolationMonitor() {
       </div>
 
       <div class="footer">
-        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+        <p>react-proctor &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-proctor">GitHub</a></p>
       </div>
     </main>
   </div>

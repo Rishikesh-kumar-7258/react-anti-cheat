@@ -1,7 +1,7 @@
 {
-  "name": "@rishikesh7258/react-anti-cheat",
+  "name": "@rishikesh7258/react-proctor",
   "version": "1.0.0",
-  "description": "A configurable, extensible anti-cheating system for React applications",
+  "description": "A configurable, extensible proctoring and integrity enforcement library for React applications",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -47,7 +47,7 @@
   },
   "keywords": [
     "react",
-    "anti-cheat",
+    "proctor",
     "proctoring",
     "copy-protection",
     "tab-detection",

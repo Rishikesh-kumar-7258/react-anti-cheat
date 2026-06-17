@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Reference - react-anti-cheat</title>
+  <title>API Reference - react-proctor</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <h2>react-anti-cheat</h2>
+        <h2>react-proctor</h2>
         <div class="version">v1.0.0</div>
       </div>
       <nav>
@@ -90,7 +90,7 @@
       </ul>
 
       <h2 id="useanticheat">useAntiCheat Hook</h2>
-      <p>Provides runtime control over the anti-cheat system.</p>
+      <p>Provides runtime control over the proctor system.</p>
 <pre><code>const {
   isActive,
   isLockedOut,
@@ -107,7 +107,7 @@
       <table>
         <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td><code>isActive</code></td><td><code>boolean</code></td><td>Whether the anti-cheat system is currently active</td></tr>
+          <tr><td><code>isActive</code></td><td><code>boolean</code></td><td>Whether the proctor system is currently active</td></tr>
           <tr><td><code>isLockedOut</code></td><td><code>boolean</code></td><td>Whether the user has been locked out</td></tr>
           <tr><td><code>violations</code></td><td><code>Violation[]</code></td><td>Array of all violation events in the current session</td></tr>
           <tr><td><code>violationCount</code></td><td><code>number</code></td><td>Total number of violations</td></tr>
@@ -225,7 +225,7 @@
   UseViolationLogOptions,
   UseViolationLogReturn,
   Preset,
-} from '@rishikesh7258/react-anti-cheat';</code></pre>
+} from '@rishikesh7258/react-proctor';</code></pre>
 
       <h3>AntiCheatConfig</h3>
 <pre><code>interface AntiCheatConfig {
@@ -276,7 +276,7 @@ type Severity = 'info' | 'warning' | 'critical';</code></pre>
       </div>
 
       <div class="footer">
-        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+        <p>react-proctor &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-proctor">GitHub</a></p>
       </div>
     </main>
   </div>

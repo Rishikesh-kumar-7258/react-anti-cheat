@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Getting Started - react-anti-cheat</title>
+  <title>Getting Started - react-proctor</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <h2>react-anti-cheat</h2>
+        <h2>react-proctor</h2>
         <div class="version">v1.0.0</div>
       </div>
       <nav>
@@ -34,17 +34,17 @@
 
     <main class="main">
       <h1>Getting Started</h1>
-      <p class="page-description">Install the package and set up anti-cheat protection in your React app in under 5 minutes.</p>
+      <p class="page-description">Install the package and set up proctoring in your React app in under 5 minutes.</p>
 
       <h2>Installation</h2>
 <pre><code># npm
-npm install @rishikesh7258/react-anti-cheat
+npm install @rishikesh7258/react-proctor
 
 # yarn
-yarn add @rishikesh7258/react-anti-cheat
+yarn add @rishikesh7258/react-proctor
 
 # pnpm
-pnpm add @rishikesh7258/react-anti-cheat</code></pre>
+pnpm add @rishikesh7258/react-proctor</code></pre>
 
       <h3>Peer Dependencies</h3>
       <p>This package requires React 16.8+ (hooks support).</p>
@@ -61,7 +61,7 @@ pnpm add @rishikesh7258/react-anti-cheat</code></pre>
 
       <h2>Basic Setup</h2>
       <p>Wrap your application (or a section of it) with <code>AntiCheatProvider</code> and pass a configuration object:</p>
-<pre><code>import { AntiCheatProvider } from '@rishikesh7258/react-anti-cheat';
+<pre><code>import { AntiCheatProvider } from '@rishikesh7258/react-proctor';
 
 const config = {
   restrictions: {
@@ -85,7 +85,7 @@ function App() {
 
       <h2>Using Presets</h2>
       <p>For common scenarios, use a preset instead of configuring each restriction manually:</p>
-<pre><code>import { AntiCheatProvider, presets } from '@rishikesh7258/react-anti-cheat';
+<pre><code>import { AntiCheatProvider, presets } from '@rishikesh7258/react-proctor';
 
 // Use the exam preset (maximum restrictions)
 function ExamApp() {
@@ -107,8 +107,8 @@ const config = {
       <p>Available presets: <code>exam</code>, <code>quiz</code>, <code>contentProtection</code>, <code>minimal</code>. See <a href="presets.html">Presets</a> for details.</p>
 
       <h2>Using the Hook</h2>
-      <p>Access the anti-cheat state and controls from any child component:</p>
-<pre><code>import { useAntiCheat } from '@rishikesh7258/react-anti-cheat';
+      <p>Access the proctor state and controls from any child component:</p>
+<pre><code>import { useAntiCheat } from '@rishikesh7258/react-proctor';
 
 function Dashboard() {
   const { violations, violationCount, isLockedOut } = useAntiCheat();
@@ -123,7 +123,7 @@ function Dashboard() {
 
       <h2>Scoped Zones</h2>
       <p>Apply different restrictions to specific sections of your UI:</p>
-<pre><code>import { AntiCheatZone } from '@rishikesh7258/react-anti-cheat';
+<pre><code>import { AntiCheatZone } from '@rishikesh7258/react-proctor';
 
 // Strict zone
 &lt;AntiCheatZone
@@ -173,7 +173,7 @@ function Dashboard() {
       </div>
 
       <div class="footer">
-        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+        <p>react-proctor &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-proctor">GitHub</a></p>
       </div>
     </main>
   </div>

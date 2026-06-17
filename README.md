@@ -1,19 +1,19 @@
-# react-anti-cheat
+# react-proctor
 
-A configurable, extensible anti-cheating system for React applications. Provides route-level control over restrictions like copy prevention, tab-switch detection, devtools blocking, and more — with a plugin architecture that makes adding new restrictions trivial.
+A configurable, extensible proctoring and integrity enforcement library for React applications. Provides route-level control over restrictions like copy prevention, tab-switch detection, devtools blocking, and more — with a plugin architecture that makes adding new restrictions trivial.
 
-**[Full Documentation](https://rishikesh-kumar-7258.github.io/react-anti-cheat/)**
+**[Full Documentation](https://rishikesh-kumar-7258.github.io/react-proctor/)**
 
 ## Installation
 
 ```bash
-npm install @rishikesh7258/react-anti-cheat
+npm install @rishikesh7258/react-proctor
 ```
 
 ## Quick Start
 
 ```tsx
-import { AntiCheatProvider } from '@rishikesh7258/react-anti-cheat';
+import { AntiCheatProvider } from '@rishikesh7258/react-proctor';
 
 const config = {
   restrictions: {
@@ -39,7 +39,7 @@ function App() {
 ## Using Presets
 
 ```tsx
-import { AntiCheatProvider, presets } from '@rishikesh7258/react-anti-cheat';
+import { AntiCheatProvider, presets } from '@rishikesh7258/react-proctor';
 
 function ExamApp() {
   return (
@@ -69,7 +69,7 @@ Available presets: `exam`, `quiz`, `contentProtection`, `minimal`
 
 ## Documentation
 
-For the full API reference, restriction options, presets, custom plugins, and advanced usage, visit the **[documentation site](https://rishikesh-kumar-7258.github.io/react-anti-cheat/)**.
+For the full API reference, restriction options, presets, custom plugins, and advanced usage, visit the **[documentation site](https://rishikesh-kumar-7258.github.io/react-proctor/)**.
 
 ## License
 
