@@ -1,0 +1,68 @@
+{
+  "name": "@rishikesh7258/react-anti-cheat",
+  "version": "1.0.0",
+  "description": "A configurable, extensible anti-cheating system for React applications",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "dependencies": {
+    "devtools-detector": "^2.0.14",
+    "screenfull": "^6.0.2",
+    "visibilityjs": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  },
+  "keywords": [
+    "react",
+    "anti-cheat",
+    "proctoring",
+    "copy-protection",
+    "tab-detection",
+    "devtools-detection",
+    "fullscreen",
+    "exam",
+    "quiz"
+  ],
+  "license": "MIT",
+  "author": "rishikesh7258",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
