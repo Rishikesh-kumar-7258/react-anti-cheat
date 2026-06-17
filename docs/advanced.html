@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Usage - react-anti-cheat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">&#9776;</button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>react-anti-cheat</h2>
+        <div class="version">v1.0.0</div>
+      </div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-section-title">Overview</div>
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="getting-started.html" class="nav-link">Getting Started</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Guide</div>
+          <a href="restrictions.html" class="nav-link">Restrictions</a>
+          <a href="api-reference.html" class="nav-link">API Reference</a>
+          <a href="presets.html" class="nav-link">Presets</a>
+          <a href="advanced.html" class="nav-link active">Advanced Usage</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h1>Advanced Usage</h1>
+      <p class="page-description">Custom restrictions, route-level configuration, auto-lockout, and integration patterns.</p>
+
+      <h2 id="custom-restrictions">Custom Restrictions (Plugin API)</h2>
+      <p>Register your own restrictions that integrate seamlessly with the built-in system.</p>
+
+      <h3>registerRestriction</h3>
+<pre><code>import { registerRestriction } from '@rishikesh7258/react-anti-cheat';
+
+registerRestriction({
+  name: 'detectScreenRecording',
+
+  enable(options, onViolation) {
+    this._handler = () =&gt; {
+      onViolation({
+        method: 'screen-capture-api',
+      });
+    };
+    navigator.mediaDevices.addEventListener('devicechange', this._handler);
+  },
+
+  disable() {
+    navigator.mediaDevices.removeEventListener('devicechange', this._handler);
+  },
+});</code></pre>
+
+      <p>Once registered, use it like any built-in restriction:</p>
+<pre><code>const config = {
+  restrictions: {
+    disableCopy: { enabled: true },
+    detectScreenRecording: { enabled: true, severity: 'critical' },
+  },
+};</code></pre>
+
+      <h3>Restriction Interface</h3>
+<pre><code>interface RestrictionModule {
+  name: string;
+  enable(options: Record&lt;string, any&gt;, onViolation: (metadata: Record&lt;string, any&gt;) =&gt; void): void;
+  disable(): void;
+}</code></pre>
+
+      <div class="callout callout-warning">
+        <strong>Rules for custom restrictions</strong>
+        <p>1. <code>enable()</code> must be idempotent &mdash; calling it twice should not double-register listeners.<br>
+           2. <code>disable()</code> must fully clean up &mdash; no lingering listeners, timers, or DOM mutations.<br>
+           3. <code>name</code> must be unique across all registered restrictions.</p>
+      </div>
+
+      <h2 id="route-level">Route-Level Configuration</h2>
+      <p>The library is router-agnostic. You control which restrictions are active per route using either config mapping or zone components.</p>
+
+      <h3>Option A: Config-based route mapping</h3>
+      <p>Pass a <code>routes</code> object to the provider. Keys are path patterns (supports <code>*</code> wildcards).</p>
+<pre><code>const config = {
+  restrictions: {
+    disableCopy: { enabled: true },
+    disableRightClick: { enabled: true },
+  },
+  routes: {
+    '/arena/*': {
+      detectTabSwitch: { enabled: true, severity: 'critical' },
+      enforceFullscreen: { enabled: true },
+      detectDevTools: { enabled: true },
+    },
+    '/quiz/*': {
+      detectTabSwitch: { enabled: true, maxViolations: 3 },
+      disableKeyboardShortcuts: { enabled: true },
+    },
+    '/community/*': false,  // disable ALL restrictions
+    '/help': false,
+  },
+};
+
+&lt;AntiCheatProvider config={config} currentPath={location.pathname}&gt;
+  &lt;App /&gt;
+&lt;/AntiCheatProvider&gt;</code></pre>
+
+      <h4>Route matching rules</h4>
+      <ul>
+        <li>Exact match takes priority over wildcard</li>
+        <li>More specific patterns take priority over less specific</li>
+        <li>Route config is merged with the base <code>restrictions</code> (route values win)</li>
+        <li><code>false</code> disables all restrictions for that route</li>
+      </ul>
+
+      <h3>Option B: Zone-based (component-level)</h3>
+<pre><code>&lt;AntiCheatZone restrictions={{ detectTabSwitch: { enabled: true } }}&gt;
+  &lt;QuizPage /&gt;
+&lt;/AntiCheatZone&gt;
+
+&lt;AntiCheatZone restrictions={{}} mode="replace"&gt;
+  &lt;FreeZone /&gt;
+&lt;/AntiCheatZone&gt;</code></pre>
+
+      <h2 id="auto-lockout">Auto-Lockout</h2>
+      <p>When <code>lockoutAfter</code> is set on the provider, the system automatically locks the user out after the total violation count reaches the threshold.</p>
+<pre><code>&lt;AntiCheatProvider
+  config={config}
+  lockoutAfter={10}
+  lockoutComponent={
+    &lt;div&gt;
+      &lt;h1&gt;Session Terminated&lt;/h1&gt;
+      &lt;p&gt;Too many violations were detected. Your session has been recorded.&lt;/p&gt;
+    &lt;/div&gt;
+  }
+&gt;
+  &lt;App /&gt;
+&lt;/AntiCheatProvider&gt;</code></pre>
+
+      <h3>Lockout behavior</h3>
+      <ul>
+        <li>All children are replaced with the <code>lockoutComponent</code></li>
+        <li><code>onViolation</code> fires one final time with <code>type: 'system:lockout'</code></li>
+        <li><code>onSessionEnd</code> fires with <code>wasLockedOut: true</code></li>
+        <li>Lockout persists until <code>unlock()</code> is called via the hook or the provider unmounts</li>
+      </ul>
+
+      <div class="callout callout-tip">
+        <strong>Per-restriction lockout</strong>
+        <p>Some restrictions (like <code>detectTabSwitch</code> and <code>enforceFullscreen</code>) support their own <code>maxViolations</code> / <code>maxExits</code> option that triggers lockout independently of the global count.</p>
+      </div>
+
+      <h2 id="backend-integration">Backend Integration</h2>
+      <p>Use the callback system to send violations to your backend in real-time:</p>
+<pre><code>const config = {
+  restrictions: { ...presets.exam },
+
+  onViolation: (violation) =&gt; {
+    fetch('/api/violations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(violation),
+    });
+  },
+
+  onSessionStart: (session) =&gt; {
+    fetch('/api/sessions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: session.id,
+        startedAt: session.startedAt,
+        restrictions: session.activeRestrictions,
+      }),
+    });
+  },
+
+  onSessionEnd: (summary) =&gt; {
+    fetch(`/api/sessions/${summary.sessionId}/end`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(summary),
+    });
+  },
+};</code></pre>
+
+      <h2 id="custom-violation-ui">Custom Violation UI</h2>
+      <p>Use the <code>useViolationLog</code> hook to build custom monitoring dashboards:</p>
+<pre><code>import { useViolationLog } from '@rishikesh7258/react-anti-cheat';
+
+function ViolationMonitor() {
+  const { violations, countByType, countBySeverity, lastViolation } = useViolationLog({
+    filter: ['detectTabSwitch', 'detectDevTools'],
+    maxEntries: 100,
+  });
+
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Critical violations: {countBySeverity.critical || 0}&lt;/h3&gt;
+      {lastViolation &amp;&amp; (
+        &lt;p&gt;Last: {lastViolation.type} at {new Date(lastViolation.timestamp).toLocaleTimeString()}&lt;/p&gt;
+      )}
+      &lt;ul&gt;
+        {Object.entries(countByType).map(([type, count]) =&gt; (
+          &lt;li key={type}&gt;{type}: {count}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+      <h2 id="architecture">Architecture</h2>
+<pre><code>AntiCheatProvider (top-level context)
+|
++-- Restriction Registry
+|   +-- Built-in restrictions (12 modules)
+|   +-- Custom restrictions (via registerRestriction)
+|
++-- Violation Manager
+|   +-- Captures violation events
+|   +-- Tracks count per type
+|   +-- Triggers callbacks &amp; auto-lockout
+|
++-- AntiCheatZone (scoped overrides)
+|   +-- Merges parent config with zone-level overrides
+|
++-- Hooks
+    +-- useAntiCheat()    -- control API
+    +-- useViolationLog() -- violation history</code></pre>
+
+      <p>Each restriction is a standalone module implementing the <code>Restriction</code> interface:</p>
+<pre><code>interface Restriction {
+  name: string;
+  enable(options: Record&lt;string, any&gt;, onViolation: ViolationHandler): void;
+  disable(): void;
+}</code></pre>
+
+      <div class="page-nav">
+        <a href="presets.html">
+          <span class="label">Previous</span>
+          <span class="title">&larr; Presets</span>
+        </a>
+        <span></span>
+      </div>
+
+      <div class="footer">
+        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

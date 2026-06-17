@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started - react-anti-cheat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">&#9776;</button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>react-anti-cheat</h2>
+        <div class="version">v1.0.0</div>
+      </div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-section-title">Overview</div>
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="getting-started.html" class="nav-link active">Getting Started</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Guide</div>
+          <a href="restrictions.html" class="nav-link">Restrictions</a>
+          <a href="api-reference.html" class="nav-link">API Reference</a>
+          <a href="presets.html" class="nav-link">Presets</a>
+          <a href="advanced.html" class="nav-link">Advanced Usage</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h1>Getting Started</h1>
+      <p class="page-description">Install the package and set up anti-cheat protection in your React app in under 5 minutes.</p>
+
+      <h2>Installation</h2>
+<pre><code># npm
+npm install @rishikesh7258/react-anti-cheat
+
+# yarn
+yarn add @rishikesh7258/react-anti-cheat
+
+# pnpm
+pnpm add @rishikesh7258/react-anti-cheat</code></pre>
+
+      <h3>Peer Dependencies</h3>
+      <p>This package requires React 16.8+ (hooks support).</p>
+<pre><code>{
+  "react": "&gt;=16.8.0",
+  "react-dom": "&gt;=16.8.0"
+}</code></pre>
+      <p>The following libraries are bundled &mdash; you don't need to install them:</p>
+      <ul>
+        <li><code>visibilityjs</code> &mdash; tab visibility detection</li>
+        <li><code>screenfull</code> &mdash; fullscreen API wrapper</li>
+        <li><code>devtools-detector</code> &mdash; devtools detection</li>
+      </ul>
+
+      <h2>Basic Setup</h2>
+      <p>Wrap your application (or a section of it) with <code>AntiCheatProvider</code> and pass a configuration object:</p>
+<pre><code>import { AntiCheatProvider } from '@rishikesh7258/react-anti-cheat';
+
+const config = {
+  restrictions: {
+    disableCopy: { enabled: true },
+    disableRightClick: { enabled: true },
+    detectTabSwitch: { enabled: true, maxViolations: 3 },
+    detectDevTools: { enabled: true },
+  },
+  onViolation: (violation) =&gt; {
+    console.warn(`Violation: ${violation.type}`, violation);
+  },
+};
+
+function App() {
+  return (
+    &lt;AntiCheatProvider config={config}&gt;
+      &lt;YourApp /&gt;
+    &lt;/AntiCheatProvider&gt;
+  );
+}</code></pre>
+
+      <h2>Using Presets</h2>
+      <p>For common scenarios, use a preset instead of configuring each restriction manually:</p>
+<pre><code>import { AntiCheatProvider, presets } from '@rishikesh7258/react-anti-cheat';
+
+// Use the exam preset (maximum restrictions)
+function ExamApp() {
+  return (
+    &lt;AntiCheatProvider config={{ restrictions: presets.exam }}&gt;
+      &lt;ExamContent /&gt;
+    &lt;/AntiCheatProvider&gt;
+  );
+}
+
+// Or extend a preset
+const config = {
+  restrictions: {
+    ...presets.quiz,
+    detectDevTools: { enabled: true },
+  },
+};
+</code></pre>
+      <p>Available presets: <code>exam</code>, <code>quiz</code>, <code>contentProtection</code>, <code>minimal</code>. See <a href="presets.html">Presets</a> for details.</p>
+
+      <h2>Using the Hook</h2>
+      <p>Access the anti-cheat state and controls from any child component:</p>
+<pre><code>import { useAntiCheat } from '@rishikesh7258/react-anti-cheat';
+
+function Dashboard() {
+  const { violations, violationCount, isLockedOut } = useAntiCheat();
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Violations: {violationCount}&lt;/p&gt;
+      {isLockedOut &amp;&amp; &lt;p&gt;You have been locked out.&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+      <h2>Scoped Zones</h2>
+      <p>Apply different restrictions to specific sections of your UI:</p>
+<pre><code>import { AntiCheatZone } from '@rishikesh7258/react-anti-cheat';
+
+// Strict zone
+&lt;AntiCheatZone
+  restrictions={{ disableCopy: { enabled: true }, disablePaste: { enabled: true } }}
+  mode="override"
+&gt;
+  &lt;ExamContent /&gt;
+&lt;/AntiCheatZone&gt;
+
+// No restrictions zone
+&lt;AntiCheatZone restrictions={{}} mode="replace"&gt;
+  &lt;HelpSection /&gt;
+&lt;/AntiCheatZone&gt;</code></pre>
+
+      <h2>Auto-Lockout</h2>
+      <p>Lock the user out after too many violations:</p>
+<pre><code>&lt;AntiCheatProvider
+  config={config}
+  lockoutAfter={10}
+  lockoutComponent={
+    &lt;div&gt;
+      &lt;h1&gt;Session Terminated&lt;/h1&gt;
+      &lt;p&gt;Too many violations were detected.&lt;/p&gt;
+    &lt;/div&gt;
+  }
+&gt;
+  &lt;App /&gt;
+&lt;/AntiCheatProvider&gt;</code></pre>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="restrictions.html">Restrictions</a> &mdash; all 12 built-in restrictions and their options</li>
+        <li><a href="api-reference.html">API Reference</a> &mdash; provider props, hooks, types, and plugin API</li>
+        <li><a href="presets.html">Presets</a> &mdash; pre-configured bundles for common use cases</li>
+        <li><a href="advanced.html">Advanced Usage</a> &mdash; route-level config, custom restrictions, violation handling</li>
+      </ul>
+
+      <div class="page-nav">
+        <a href="index.html">
+          <span class="label">Previous</span>
+          <span class="title">&larr; Home</span>
+        </a>
+        <a href="restrictions.html">
+          <span class="label">Next</span>
+          <span class="title">Restrictions &rarr;</span>
+        </a>
+      </div>
+
+      <div class="footer">
+        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

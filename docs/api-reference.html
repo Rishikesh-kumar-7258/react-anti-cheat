@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Reference - react-anti-cheat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">&#9776;</button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>react-anti-cheat</h2>
+        <div class="version">v1.0.0</div>
+      </div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-section-title">Overview</div>
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="getting-started.html" class="nav-link">Getting Started</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Guide</div>
+          <a href="restrictions.html" class="nav-link">Restrictions</a>
+          <a href="api-reference.html" class="nav-link active">API Reference</a>
+          <a href="presets.html" class="nav-link">Presets</a>
+          <a href="advanced.html" class="nav-link">Advanced Usage</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h1>API Reference</h1>
+      <p class="page-description">Complete reference for components, hooks, types, and the plugin API.</p>
+
+      <h2 id="anticheatprovider">AntiCheatProvider</h2>
+      <p>Top-level provider that wraps your application and manages all restrictions.</p>
+<pre><code>&lt;AntiCheatProvider
+  config={config}
+  onViolation={handleViolation}
+  onRestrictionChange={handleChange}
+  onSessionStart={handleSessionStart}
+  onSessionEnd={handleSessionEnd}
+  lockoutAfter={10}
+  lockoutComponent={&lt;CustomLockoutScreen /&gt;}
+  debug={false}
+&gt;
+  {children}
+&lt;/AntiCheatProvider&gt;</code></pre>
+
+      <table>
+        <thead><tr><th>Prop</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>config</code></td><td><code>AntiCheatConfig</code></td><td>Yes</td><td>&mdash;</td><td>Restriction configuration object</td></tr>
+          <tr><td><code>onViolation</code></td><td><code>(violation: Violation) =&gt; void</code></td><td>No</td><td>&mdash;</td><td>Called on every violation event</td></tr>
+          <tr><td><code>onRestrictionChange</code></td><td><code>(changes: RestrictionChange) =&gt; void</code></td><td>No</td><td>&mdash;</td><td>Called when restrictions are enabled/disabled at runtime</td></tr>
+          <tr><td><code>onSessionStart</code></td><td><code>(session: Session) =&gt; void</code></td><td>No</td><td>&mdash;</td><td>Called when the provider mounts and restrictions activate</td></tr>
+          <tr><td><code>onSessionEnd</code></td><td><code>(summary: SessionSummary) =&gt; void</code></td><td>No</td><td>&mdash;</td><td>Called on unmount with a summary of all violations</td></tr>
+          <tr><td><code>lockoutAfter</code></td><td><code>number</code></td><td>No</td><td><code>undefined</code></td><td>Total violation count that triggers auto-lockout</td></tr>
+          <tr><td><code>lockoutComponent</code></td><td><code>ReactNode</code></td><td>No</td><td>Built-in screen</td><td>Custom UI shown when lockout triggers</td></tr>
+          <tr><td><code>debug</code></td><td><code>boolean</code></td><td>No</td><td><code>false</code></td><td>Logs restriction lifecycle and violations to console</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="anticheatzone">AntiCheatZone</h2>
+      <p>Scoped wrapper that overrides the parent config for a specific section of the UI.</p>
+<pre><code>&lt;AntiCheatZone
+  restrictions={{ disableCopy: { enabled: true } }}
+  mode="override"
+&gt;
+  &lt;ExamContent /&gt;
+&lt;/AntiCheatZone&gt;</code></pre>
+
+      <table>
+        <thead><tr><th>Prop</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>restrictions</code></td><td><code>RestrictionsConfig</code></td><td>Yes</td><td>&mdash;</td><td>Restriction overrides for this zone</td></tr>
+          <tr><td><code>mode</code></td><td><code>'merge' | 'override' | 'replace'</code></td><td>No</td><td><code>'merge'</code></td><td>How zone config combines with parent config</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Zone Modes</h3>
+      <ul>
+        <li><strong>merge</strong> &mdash; zone config is deep-merged with parent (zone values win on conflict)</li>
+        <li><strong>override</strong> &mdash; only the restrictions specified in the zone are active; unmentioned ones use parent defaults</li>
+        <li><strong>replace</strong> &mdash; completely replaces parent config; only zone restrictions are active</li>
+      </ul>
+
+      <h2 id="useanticheat">useAntiCheat Hook</h2>
+      <p>Provides runtime control over the anti-cheat system.</p>
+<pre><code>const {
+  isActive,
+  isLockedOut,
+  violations,
+  violationCount,
+  activeRestrictions,
+  enableRestriction,
+  disableRestriction,
+  resetViolations,
+  lockout,
+  unlock,
+} = useAntiCheat();</code></pre>
+
+      <table>
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>isActive</code></td><td><code>boolean</code></td><td>Whether the anti-cheat system is currently active</td></tr>
+          <tr><td><code>isLockedOut</code></td><td><code>boolean</code></td><td>Whether the user has been locked out</td></tr>
+          <tr><td><code>violations</code></td><td><code>Violation[]</code></td><td>Array of all violation events in the current session</td></tr>
+          <tr><td><code>violationCount</code></td><td><code>number</code></td><td>Total number of violations</td></tr>
+          <tr><td><code>activeRestrictions</code></td><td><code>string[]</code></td><td>Names of currently active restrictions</td></tr>
+          <tr><td><code>enableRestriction</code></td><td><code>(name: string, options?: object) =&gt; void</code></td><td>Enable a restriction at runtime</td></tr>
+          <tr><td><code>disableRestriction</code></td><td><code>(name: string) =&gt; void</code></td><td>Disable a restriction at runtime</td></tr>
+          <tr><td><code>resetViolations</code></td><td><code>() =&gt; void</code></td><td>Clear all recorded violations and reset counts</td></tr>
+          <tr><td><code>lockout</code></td><td><code>() =&gt; void</code></td><td>Manually trigger lockout</td></tr>
+          <tr><td><code>unlock</code></td><td><code>() =&gt; void</code></td><td>Release lockout state</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="useviolationlog">useViolationLog Hook</h2>
+      <p>Subscribe to violation events reactively. Useful for building custom violation UIs or sending violations to a backend.</p>
+<pre><code>const { violations, countByType, countBySeverity, lastViolation } = useViolationLog({
+  filter: ['detectTabSwitch', 'detectDevTools'],
+  maxEntries: 100,
+});</code></pre>
+
+      <h3>Options</h3>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>filter</code></td><td><code>string[]</code></td><td>All types</td><td>Only track violations of these types</td></tr>
+          <tr><td><code>maxEntries</code></td><td><code>number</code></td><td><code>500</code></td><td>Max violations to keep in memory</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Returns</h3>
+      <table>
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>violations</code></td><td><code>Violation[]</code></td><td>Filtered violation list</td></tr>
+          <tr><td><code>countByType</code></td><td><code>Record&lt;string, number&gt;</code></td><td>Violation count grouped by restriction type</td></tr>
+          <tr><td><code>countBySeverity</code></td><td><code>Record&lt;Severity, number&gt;</code></td><td>Violation count grouped by severity level</td></tr>
+          <tr><td><code>lastViolation</code></td><td><code>Violation | null</code></td><td>Most recent violation event</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="callbacks">Callbacks &amp; Events</h2>
+
+      <h3>onViolation</h3>
+      <p>Called every time any restriction is violated.</p>
+<pre><code>const config = {
+  onViolation: (violation) =&gt; {
+    fetch('/api/violations', {
+      method: 'POST',
+      body: JSON.stringify(violation),
+    });
+
+    if (violation.severity === 'critical') {
+      showWarningModal('This action has been recorded.');
+    }
+  },
+};</code></pre>
+
+      <h3>onRestrictionChange</h3>
+      <p>Called when a restriction is enabled or disabled at runtime.</p>
+<pre><code>interface RestrictionChange {
+  restriction: string;
+  action: 'enabled' | 'disabled';
+  timestamp: number;
+  source: 'programmatic' | 'zone-change' | 'config-update';
+}</code></pre>
+
+      <h3>onSessionStart</h3>
+      <p>Called when <code>AntiCheatProvider</code> mounts and restrictions become active.</p>
+<pre><code>interface Session {
+  id: string;                  // unique session ID (UUID)
+  startedAt: number;           // timestamp
+  activeRestrictions: string[];
+  config: AntiCheatConfig;
+}</code></pre>
+
+      <h3>onSessionEnd</h3>
+      <p>Called when <code>AntiCheatProvider</code> unmounts with a full session summary.</p>
+<pre><code>interface SessionSummary {
+  sessionId: string;
+  startedAt: number;
+  endedAt: number;
+  durationMs: number;
+  totalViolations: number;
+  violationsByType: Record&lt;string, number&gt;;
+  violationsBySeverity: Record&lt;Severity, number&gt;;
+  wasLockedOut: boolean;
+  lockoutTimestamp: number | null;
+}</code></pre>
+
+      <h2 id="violation-object">Violation Object</h2>
+<pre><code>interface Violation {
+  id: string;                  // unique violation ID (UUID)
+  type: string;                // restriction name (e.g., 'disableCopy')
+  severity: 'info' | 'warning' | 'critical';
+  timestamp: number;           // Unix timestamp (ms)
+  message: string;             // human-readable description
+  metadata: Record&lt;string, any&gt;; // restriction-specific data
+  sessionId: string;           // links to the active session
+}</code></pre>
+
+      <h2 id="typescript-types">TypeScript Types</h2>
+      <p>All types are exported from the package root:</p>
+<pre><code>import type {
+  AntiCheatConfig,
+  RestrictionsConfig,
+  Restriction,
+  RestrictionModule,
+  Violation,
+  Severity,
+  Session,
+  SessionSummary,
+  RestrictionChange,
+  AntiCheatProviderProps,
+  AntiCheatZoneProps,
+  UseAntiCheatReturn,
+  UseViolationLogOptions,
+  UseViolationLogReturn,
+  Preset,
+} from '@rishikesh7258/react-anti-cheat';</code></pre>
+
+      <h3>AntiCheatConfig</h3>
+<pre><code>interface AntiCheatConfig {
+  restrictions: RestrictionsConfig;
+  routes?: Record&lt;string, RestrictionsConfig | false&gt;;
+  onViolation?: (violation: Violation) =&gt; void;
+  onRestrictionChange?: (change: RestrictionChange) =&gt; void;
+  onSessionStart?: (session: Session) =&gt; void;
+  onSessionEnd?: (summary: SessionSummary) =&gt; void;
+  lockoutAfter?: number;
+  lockoutComponent?: React.ReactNode;
+  debug?: boolean;
+}</code></pre>
+
+      <h3>RestrictionsConfig</h3>
+<pre><code>interface RestrictionsConfig {
+  disableCopy?: RestrictionOptions &amp; { allowInputs?: boolean; showNotification?: boolean; notificationMessage?: string };
+  disablePaste?: RestrictionOptions &amp; { allowInputs?: boolean; showNotification?: boolean; notificationMessage?: string };
+  disableCut?: RestrictionOptions &amp; { showNotification?: boolean; notificationMessage?: string };
+  disableTextSelection?: RestrictionOptions &amp; { excludeSelectors?: string[] };
+  disableRightClick?: RestrictionOptions &amp; { showNotification?: boolean; excludeSelectors?: string[] };
+  detectTabSwitch?: RestrictionOptions &amp; { maxViolations?: number; gracePeriodMs?: number; trackDuration?: boolean };
+  detectDevTools?: RestrictionOptions &amp; { action?: 'warn' | 'redirect' | 'lockout'; redirectUrl?: string; checkIntervalMs?: number };
+  enforceFullscreen?: RestrictionOptions &amp; { promptOnMount?: boolean; reEnterOnExit?: boolean; maxExits?: number; promptMessage?: string };
+  disableKeyboardShortcuts?: RestrictionOptions &amp; { blocked?: string[]; allowList?: string[]; showNotification?: boolean };
+  disableDragDrop?: RestrictionOptions &amp; { excludeSelectors?: string[] };
+  disablePrintScreen?: RestrictionOptions &amp; { overlayColor?: string; overlayDurationMs?: number; blockPrintDialog?: boolean };
+  detectIdle?: RestrictionOptions &amp; { idleThresholdMs?: number; events?: string[] };
+  [customRestriction: string]: RestrictionOptions | undefined;
+}
+
+interface RestrictionOptions {
+  enabled: boolean;
+  severity?: Severity;
+}
+
+type Severity = 'info' | 'warning' | 'critical';</code></pre>
+
+      <div class="page-nav">
+        <a href="restrictions.html">
+          <span class="label">Previous</span>
+          <span class="title">&larr; Restrictions</span>
+        </a>
+        <a href="presets.html">
+          <span class="label">Next</span>
+          <span class="title">Presets &rarr;</span>
+        </a>
+      </div>
+
+      <div class="footer">
+        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

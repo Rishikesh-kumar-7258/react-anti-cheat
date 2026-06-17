@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>react-anti-cheat - Documentation</title>
+  <meta name="description" content="A configurable, extensible anti-cheating system for React applications.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">&#9776;</button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>react-anti-cheat</h2>
+        <div class="version">v1.0.0</div>
+      </div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-section-title">Overview</div>
+          <a href="index.html" class="nav-link active">Home</a>
+          <a href="getting-started.html" class="nav-link">Getting Started</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Guide</div>
+          <a href="restrictions.html" class="nav-link">Restrictions</a>
+          <a href="api-reference.html" class="nav-link">API Reference</a>
+          <a href="presets.html" class="nav-link">Presets</a>
+          <a href="advanced.html" class="nav-link">Advanced Usage</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="hero">
+        <h1>react-anti-cheat</h1>
+        <p class="tagline">A configurable, extensible anti-cheating system for React applications with route-level control and a plugin architecture.</p>
+        <div class="hero-buttons">
+          <a href="getting-started.html" class="btn btn-primary">Get Started</a>
+          <a href="api-reference.html" class="btn btn-secondary">API Reference</a>
+        </div>
+        <div class="install-box">
+          <code>npm install @rishikesh7258/react-anti-cheat</code>
+        </div>
+      </div>
+
+      <h2>Features</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h4>12 Built-in Restrictions</h4>
+          <p>Copy/paste, right-click, tab-switch, devtools, fullscreen, keyboard shortcuts, drag-drop, print screen, and idle detection.</p>
+        </div>
+        <div class="card">
+          <h4>Route-Level Control</h4>
+          <p>Different pages get different restriction sets via config or zone components. Router-agnostic.</p>
+        </div>
+        <div class="card">
+          <h4>Plugin Architecture</h4>
+          <p>Register custom restrictions that follow the same interface as built-ins.</p>
+        </div>
+        <div class="card">
+          <h4>TypeScript-First</h4>
+          <p>Full type definitions, autocompletion for config and events. SSR-safe and tree-shakable.</p>
+        </div>
+        <div class="card">
+          <h4>Presets</h4>
+          <p>Pre-configured bundles for exam, quiz, content protection, and minimal monitoring.</p>
+        </div>
+        <div class="card">
+          <h4>Violation Tracking</h4>
+          <p>Every restricted action is captured as a structured event with timestamp, type, severity, and metadata.</p>
+        </div>
+      </div>
+
+      <h2>Powered By</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Library</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tab-switch detection</td>
+            <td><a href="https://github.com/ai/visibilityjs">visibilityjs</a></td>
+          </tr>
+          <tr>
+            <td>Fullscreen enforcement</td>
+            <td><a href="https://github.com/sindresorhus/screenfull">screenfull</a></td>
+          </tr>
+          <tr>
+            <td>DevTools detection</td>
+            <td><a href="https://github.com/AepKill/devtools-detector">devtools-detector</a></td>
+          </tr>
+          <tr>
+            <td>Copy/paste/right-click/selection</td>
+            <td>Native DOM events (zero dependencies)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Quick Example</h2>
+<pre><code>import { AntiCheatProvider } from '@rishikesh7258/react-anti-cheat';
+
+const config = {
+  restrictions: {
+    disableCopy: { enabled: true },
+    disableRightClick: { enabled: true },
+    detectTabSwitch: { enabled: true, maxViolations: 3 },
+    detectDevTools: { enabled: true },
+  },
+  onViolation: (violation) =&gt; {
+    console.warn(`Violation: ${violation.type}`, violation);
+  },
+};
+
+function App() {
+  return (
+    &lt;AntiCheatProvider config={config}&gt;
+      &lt;YourApp /&gt;
+    &lt;/AntiCheatProvider&gt;
+  );
+}</code></pre>
+
+      <h2>Browser Support</h2>
+      <table>
+        <thead>
+          <tr><th>Browser</th><th>Version</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Chrome</td><td>80+</td></tr>
+          <tr><td>Firefox</td><td>80+</td></tr>
+          <tr><td>Safari</td><td>13+</td></tr>
+          <tr><td>Edge</td><td>80+</td></tr>
+        </tbody>
+      </table>
+
+      <h2>License</h2>
+      <p>MIT</p>
+
+      <div class="page-nav">
+        <span></span>
+        <a href="getting-started.html">
+          <span class="label">Next</span>
+          <span class="title">Getting Started &rarr;</span>
+        </a>
+      </div>
+
+      <div class="footer">
+        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

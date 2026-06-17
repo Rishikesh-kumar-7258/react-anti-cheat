@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restrictions - react-anti-cheat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">&#9776;</button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>react-anti-cheat</h2>
+        <div class="version">v1.0.0</div>
+      </div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-section-title">Overview</div>
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="getting-started.html" class="nav-link">Getting Started</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Guide</div>
+          <a href="restrictions.html" class="nav-link active">Restrictions</a>
+          <a href="api-reference.html" class="nav-link">API Reference</a>
+          <a href="presets.html" class="nav-link">Presets</a>
+          <a href="advanced.html" class="nav-link">Advanced Usage</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h1>Restrictions</h1>
+      <p class="page-description">All 12 built-in restrictions with their configuration options, default severities, and violation metadata.</p>
+
+      <h2 id="disablecopy">disableCopy</h2>
+      <p>Prevents the user from copying content.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'warning'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>showNotification</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Show a toast/message on attempt</td></tr>
+          <tr><td><code>notificationMessage</code></td><td><code>string</code></td><td><code>'Copying is disabled'</code></td><td>Custom notification message</td></tr>
+          <tr><td><code>allowInputs</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Allow copy inside input and textarea</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ attempted: 'copy', target: string }</code></p>
+
+      <h2 id="disablepaste">disablePaste</h2>
+      <p>Prevents the user from pasting content.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'warning'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>showNotification</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Show a toast/message on attempt</td></tr>
+          <tr><td><code>notificationMessage</code></td><td><code>string</code></td><td>&mdash;</td><td>Custom notification message</td></tr>
+          <tr><td><code>allowInputs</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Allow paste inside input and textarea</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ attempted: 'paste', target: string }</code></p>
+
+      <h2 id="disablecut">disableCut</h2>
+      <p>Prevents the user from cutting content.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'warning'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>showNotification</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Show a toast/message on attempt</td></tr>
+          <tr><td><code>notificationMessage</code></td><td><code>string</code></td><td>&mdash;</td><td>Custom notification message</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ attempted: 'cut', target: string }</code></p>
+
+      <h2 id="disabletextselection">disableTextSelection</h2>
+      <p>Prevents the user from selecting text on the page. Applies <code>user-select: none</code> via CSS and intercepts <code>selectstart</code> events.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'info'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>excludeSelectors</code></td><td><code>string[]</code></td><td><code>[]</code></td><td>CSS selectors where selection IS allowed</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ target: string }</code></p>
+
+      <h2 id="disablerightclick">disableRightClick</h2>
+      <p>Disables the browser context menu.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'info'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>showNotification</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Show a toast/message on attempt</td></tr>
+          <tr><td><code>excludeSelectors</code></td><td><code>string[]</code></td><td><code>[]</code></td><td>CSS selectors where right-click IS allowed</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ x: number, y: number, target: string }</code></p>
+
+      <h2 id="detecttabswitch">detectTabSwitch</h2>
+      <p>Detects when the user switches to a different tab or window. Powered by <a href="https://github.com/ai/visibilityjs">visibilityjs</a>.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'critical'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>maxViolations</code></td><td><code>number</code></td><td><code>undefined</code></td><td>Auto-lockout after N tab switches</td></tr>
+          <tr><td><code>gracePeriodMs</code></td><td><code>number</code></td><td><code>0</code></td><td>Ignore switches shorter than this (ms)</td></tr>
+          <tr><td><code>trackDuration</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Track how long the user was away</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ durationMs: number | null, switchCount: number }</code></p>
+
+      <h2 id="detectdevtools">detectDevTools</h2>
+      <p>Detects when browser DevTools is opened. Powered by <a href="https://github.com/AepKill/devtools-detector">devtools-detector</a>.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'critical'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>action</code></td><td><code>'warn' | 'redirect' | 'lockout'</code></td><td><code>'warn'</code></td><td>What happens when devtools is detected</td></tr>
+          <tr><td><code>redirectUrl</code></td><td><code>string</code></td><td>&mdash;</td><td>URL to redirect to if action is 'redirect'</td></tr>
+          <tr><td><code>checkIntervalMs</code></td><td><code>number</code></td><td><code>1000</code></td><td>Detection polling interval (ms)</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ devToolsOpen: boolean }</code></p>
+
+      <h2 id="enforcefullscreen">enforceFullscreen</h2>
+      <p>Forces the browser into fullscreen mode and detects exits. Powered by <a href="https://github.com/sindresorhus/screenfull">screenfull</a>.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'critical'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>promptOnMount</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Request fullscreen when restriction activates</td></tr>
+          <tr><td><code>reEnterOnExit</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Prompt user to re-enter fullscreen on exit</td></tr>
+          <tr><td><code>maxExits</code></td><td><code>number</code></td><td><code>undefined</code></td><td>Lockout after N fullscreen exits</td></tr>
+          <tr><td><code>promptMessage</code></td><td><code>string</code></td><td>&mdash;</td><td>Custom message in re-enter prompt</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-note">
+        <strong>Note</strong>
+        <p>Browsers require a user gesture to enter fullscreen. When <code>promptOnMount</code> is true, a modal is shown asking the user to click to enter fullscreen.</p>
+      </div>
+      <p><strong>Violation metadata:</strong> <code>{ exitCount: number }</code></p>
+
+      <h2 id="disablekeyboardshortcuts">disableKeyboardShortcuts</h2>
+      <p>Blocks specific keyboard shortcuts.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'warning'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>blocked</code></td><td><code>string[]</code></td><td>See below</td><td>Shortcuts to block</td></tr>
+          <tr><td><code>allowList</code></td><td><code>string[]</code></td><td><code>[]</code></td><td>Shortcuts to explicitly allow (overrides blocked)</td></tr>
+          <tr><td><code>showNotification</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Show a toast/message on attempt</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Default blocked shortcuts:</strong></p>
+<pre><code>Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+A, Ctrl+S,
+Ctrl+U (view source), Ctrl+Shift+I (devtools),
+Ctrl+Shift+J (console), Ctrl+Shift+C (inspector),
+F12, Ctrl+P (print), Ctrl+F (find)</code></pre>
+      <p><strong>Shortcut format:</strong> Modifier keys joined with <code>+</code>. Examples: <code>'Ctrl+C'</code>, <code>'Ctrl+Shift+I'</code>, <code>'F12'</code></p>
+      <p><strong>Violation metadata:</strong> <code>{ shortcut: string, key: string, modifiers: string[] }</code></p>
+
+      <h2 id="disabledragdrop">disableDragDrop</h2>
+      <p>Prevents drag and drop operations on the page.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'info'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>excludeSelectors</code></td><td><code>string[]</code></td><td><code>[]</code></td><td>CSS selectors where drag-drop IS allowed</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ attempted: 'drag' | 'drop', target: string }</code></p>
+
+      <h2 id="disableprintscreen">disablePrintScreen</h2>
+      <p>Detects print screen key and overlays the page to prevent screenshots.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'critical'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>overlayColor</code></td><td><code>string</code></td><td><code>'#000000'</code></td><td>Overlay color when PrintScreen detected</td></tr>
+          <tr><td><code>overlayDurationMs</code></td><td><code>number</code></td><td><code>1000</code></td><td>How long overlay stays visible (ms)</td></tr>
+          <tr><td><code>blockPrintDialog</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Intercept Ctrl+P as well</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-warning">
+        <strong>Limitation</strong>
+        <p>This is a deterrent, not a guarantee. OS-level screenshots cannot be fully prevented by a web application.</p>
+      </div>
+      <p><strong>Violation metadata:</strong> <code>{ method: 'printscreen' | 'print-dialog' }</code></p>
+
+      <h2 id="detectidle">detectIdle</h2>
+      <p>Detects when the user has been idle (no mouse/keyboard activity) for a configurable duration.</p>
+      <table>
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>enabled</code></td><td><code>boolean</code></td><td>&mdash;</td><td>Enable this restriction</td></tr>
+          <tr><td><code>severity</code></td><td><code>Severity</code></td><td><code>'warning'</code></td><td>Violation severity level</td></tr>
+          <tr><td><code>idleThresholdMs</code></td><td><code>number</code></td><td><code>60000</code></td><td>Time before user is considered idle (ms)</td></tr>
+          <tr><td><code>events</code></td><td><code>string[]</code></td><td><code>['mousemove', 'keydown', 'scroll', 'touchstart']</code></td><td>DOM events that reset the idle timer</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Violation metadata:</strong> <code>{ idleDurationMs: number }</code></p>
+
+      <h2>Severity Levels</h2>
+      <table>
+        <thead><tr><th>Severity</th><th>Meaning</th><th>Default Use</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-info">info</span></td><td>Action logged, no user-facing consequence</td><td>Text selection, idle detection</td></tr>
+          <tr><td><span class="badge badge-warning">warning</span></td><td>Action logged, optional user notification</td><td>Copy/paste/cut, keyboard shortcuts</td></tr>
+          <tr><td><span class="badge badge-critical">critical</span></td><td>Action logged, may trigger lockout</td><td>Tab switch, devtools, fullscreen exit</td></tr>
+        </tbody>
+      </table>
+      <p>Each restriction has a default severity (documented above) that can be overridden in config.</p>
+
+      <div class="page-nav">
+        <a href="getting-started.html">
+          <span class="label">Previous</span>
+          <span class="title">&larr; Getting Started</span>
+        </a>
+        <a href="api-reference.html">
+          <span class="label">Next</span>
+          <span class="title">API Reference &rarr;</span>
+        </a>
+      </div>
+
+      <div class="footer">
+        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

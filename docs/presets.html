@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presets - react-anti-cheat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">&#9776;</button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>react-anti-cheat</h2>
+        <div class="version">v1.0.0</div>
+      </div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-section-title">Overview</div>
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="getting-started.html" class="nav-link">Getting Started</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Guide</div>
+          <a href="restrictions.html" class="nav-link">Restrictions</a>
+          <a href="api-reference.html" class="nav-link">API Reference</a>
+          <a href="presets.html" class="nav-link active">Presets</a>
+          <a href="advanced.html" class="nav-link">Advanced Usage</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h1>Presets</h1>
+      <p class="page-description">Pre-configured restriction bundles for common use cases. Use them as-is or extend them with additional restrictions.</p>
+
+<pre><code>import { presets } from '@rishikesh7258/react-anti-cheat';</code></pre>
+
+      <h2 id="exam">presets.exam</h2>
+      <p>Maximum restrictions &mdash; for timed exams and high-stakes assessments.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h4>Enabled Restrictions</h4>
+          <p>
+            disableCopy, disablePaste, disableCut, disableTextSelection,
+            disableRightClick, detectTabSwitch, detectDevTools, enforceFullscreen,
+            disableKeyboardShortcuts, disableDragDrop, disablePrintScreen
+          </p>
+        </div>
+      </div>
+<pre><code>{
+  disableCopy: { enabled: true },
+  disablePaste: { enabled: true },
+  disableCut: { enabled: true },
+  disableTextSelection: { enabled: true },
+  disableRightClick: { enabled: true },
+  detectTabSwitch: { enabled: true, severity: 'critical' },
+  detectDevTools: { enabled: true, severity: 'critical', action: 'lockout' },
+  enforceFullscreen: { enabled: true, reEnterOnExit: true },
+  disableKeyboardShortcuts: { enabled: true },
+  disableDragDrop: { enabled: true },
+  disablePrintScreen: { enabled: true },
+}</code></pre>
+
+      <h2 id="quiz">presets.quiz</h2>
+      <p>Moderate restrictions &mdash; for quizzes and practice tests.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h4>Enabled Restrictions</h4>
+          <p>disableCopy, disablePaste, detectTabSwitch, disableRightClick</p>
+        </div>
+      </div>
+<pre><code>{
+  disableCopy: { enabled: true },
+  disablePaste: { enabled: true },
+  detectTabSwitch: { enabled: true, severity: 'warning', gracePeriodMs: 2000 },
+  disableRightClick: { enabled: true },
+}</code></pre>
+
+      <h2 id="contentprotection">presets.contentProtection</h2>
+      <p>Prevents content theft &mdash; for protected articles, premium content.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h4>Enabled Restrictions</h4>
+          <p>disableCopy, disableCut, disableTextSelection, disableRightClick, disableDragDrop, disablePrintScreen</p>
+        </div>
+      </div>
+<pre><code>{
+  disableCopy: { enabled: true },
+  disableCut: { enabled: true },
+  disableTextSelection: { enabled: true },
+  disableRightClick: { enabled: true },
+  disableDragDrop: { enabled: true },
+  disablePrintScreen: { enabled: true },
+}</code></pre>
+
+      <h2 id="minimal">presets.minimal</h2>
+      <p>Lightweight monitoring &mdash; just tracks without blocking.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h4>Enabled Restrictions</h4>
+          <p>detectTabSwitch, detectIdle</p>
+        </div>
+      </div>
+<pre><code>{
+  detectTabSwitch: { enabled: true, severity: 'info' },
+  detectIdle: { enabled: true, severity: 'info' },
+}</code></pre>
+
+      <h2 id="extending">Extending Presets</h2>
+      <p>Spread a preset and add or override specific restrictions:</p>
+<pre><code>import { presets } from '@rishikesh7258/react-anti-cheat';
+
+const config = {
+  restrictions: {
+    ...presets.quiz,
+    detectDevTools: { enabled: true },  // add devtools detection
+    detectTabSwitch: {
+      ...presets.quiz.detectTabSwitch,
+      maxViolations: 5,                 // override tab switch limit
+    },
+  },
+};</code></pre>
+
+      <p>Or combine multiple presets:</p>
+<pre><code>const config = {
+  restrictions: {
+    ...presets.contentProtection,
+    ...presets.minimal,
+    // minimal's detectTabSwitch overrides contentProtection's (if any)
+  },
+};</code></pre>
+
+      <div class="page-nav">
+        <a href="api-reference.html">
+          <span class="label">Previous</span>
+          <span class="title">&larr; API Reference</span>
+        </a>
+        <a href="advanced.html">
+          <span class="label">Next</span>
+          <span class="title">Advanced Usage &rarr;</span>
+        </a>
+      </div>
+
+      <div class="footer">
+        <p>react-anti-cheat &middot; MIT License &middot; <a href="https://github.com/Rishikesh-kumar-7258/react-anti-cheat">GitHub</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
